@@ -282,9 +282,11 @@ class Simulator:
             
     @staticmethod
     def create_percentages(simulation_data, n):
-        simulation_data["hand_1_win_percentage"] = simulation_data["wins_splits"][1] / n * 100
-        simulation_data["hand_2_win_percentage"] = simulation_data["wins_splits"][2] / n * 100
-        simulation_data["split_percentage"] = simulation_data["wins_splits"][3] / n * 100        
+        final_simulation_data = {}
+        
+        final_simulation_data["hand_1_win_percentage"] = simulation_data["wins_splits"][1] / n * 100
+        final_simulation_data["hand_2_win_percentage"] = simulation_data["wins_splits"][2] / n * 100
+        final_simulation_data["split_percentage"] = simulation_data["wins_splits"][3] / n * 100        
         
         for win_type, wins in simulation_data["hand_1_win_types"].items():
             simulation_data["hand_1_win_percentage_types"][win_type] = wins / n * 100
@@ -294,6 +296,11 @@ class Simulator:
         
         for win_type, wins in simulation_data["split_types"].items():
             simulation_data["split_percentage_types"][win_type] = wins / n * 100
+        
+        final_simulation_data["hand_1_win_percentage_types"] = simulation_data["hand_1_win_percentage_types"]
+        final_simulation_data["hand_2_win_percentage_types"] = simulation_data["hand_2_win_percentage_types"]
+        final_simulation_data["split_percentage_types"] = simulation_data["split_percentage_types"]
+        
             
         return simulation_data
 
