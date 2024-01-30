@@ -5,38 +5,87 @@
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* .allCardsDisplayContainer {
+    display: flex;
+} */
+
+.entireDisplayGrid {
+    display: flex;
+    align-self: center;
+    justify-content: center;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.allCardsDisplay {
+    display: grid;
+    grid-template-columns: repeat(13, 3.5em);
+    padding: 0px 50px 100px 0px
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* .playersHandContainer {
+    display: flex;
+} */
+
+.playersHand {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(2, 4em);
+    justify-content: center;
 }
 
-.card {
-  padding: 2em;
+.cardSelectButton {
+    z-index: 3;
+    height: 75px;
+    width: 40px;
+    opacity: 0%;
+    margin-top: -100px;
+    margin-bottom: -100px;
+    background-color: red; 
+    position: relative;
+    top: 75px
 }
 
-.read-the-docs {
-  color: #888;
+.pieContainerGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 35em);
+    justify-content: center;
+    align-items: center;
 }
+
+
+.barContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 255, 0, 0.5);
+    border-radius: 50px;
+    margin: 20px 20px 20px 20px;
+    padding: 20px 20px 20px 20px;
+}
+
+.pieContainer {
+    width: 500px;
+    height: 500px;
+}
+
+.pieContainerHand1 {
+    background-color: rgba(0, 0, 255, 0.6);
+    border-radius: 50px;
+    margin: 50px 20px 20px 20px;
+    padding: 20px 20px 20px 20px;
+}
+
+.pieContainerHand2 {
+    background-color: rgba(255, 0, 0, 0.6);
+    border-radius: 50px;
+    margin: 50px 20px 20px 20px;
+    padding: 20px 20px 20px 20px;
+}
+
+.loadingIcon {
+    justify-content: center;
+    align-items: center;
+    padding: 40px 0 40px 0;
+}
+
+
+

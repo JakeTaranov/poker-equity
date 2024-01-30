@@ -1,0 +1,154 @@
+.card,
+.cardback,
+.flipCard {
+    --width: 3em;
+    --height: calc(var(--width) * 1.4);
+    width: var(--width);
+    height: var(--height);
+}
+
+.card,
+.cardback {
+    border-radius: 10px;
+    border: 1px solid #424040;
+    box-shadow: 5px 5px 20px rgb(0, 0, 0);
+    display: flex;
+}
+
+.card {
+    background-color: white;
+    position: relative;
+    background-color: white;
+    opacity: 30%;
+    border-radius: 10px;
+    flex-direction: column;
+    justify-content: space-between;
+    user-select: none;
+}
+
+.cardback {
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to top,
+            rgba(0, 0, 0, 0.93) 11.2%,
+            rgb(63, 61, 61) 78.9%);
+    opacity: 1;
+}
+
+.cardback>span {
+    font-family: "Fixedsys Regular", sans-serif;
+    /* font-style: italic; */
+    transform: rotate(-45deg);
+    font-size: calc(var(--width) * 0.15);
+    white-space: nowrap;
+    user-select: none;
+}
+
+.topLeft,
+.bottomRight {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.topLeft {
+    top: calc(var(--width) * 0.01);
+    left: calc(var(--width) * 0.05);
+}
+
+.bottomRight {
+    bottom: calc(var(--width) * 0.01);
+    right: calc(var(--width) * 0.05);
+}
+
+.centerSuitContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    color: black;
+}
+
+.value {
+    font-size: calc(var(--width) * 0.2);
+    font-weight: bold;
+}
+
+.value.spade,
+.value.club {
+    color: black;
+}
+
+.value.heart,
+.value.diamond {
+    color: red;
+}
+
+.suit,
+.centerSuit {
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.suit {
+    width: calc(var(--width) * 0.2);
+    height: calc(var(--width) * 0.2);
+}
+
+.centerSuit {
+    width: calc(var(--width) * 0.4);
+    height: calc(var(--width) * 0.4);
+}
+
+.bottomRight {
+    transform: rotate(180deg);
+}
+
+/* Suit Icons */
+.suit.heart,
+.centerSuit.heart {
+    background-image: url("/suits/heart.svg");
+}
+
+.suit.diamond,
+.centerSuit.diamond {
+    background-image: url("/suits/diamond.svg");
+}
+
+.suit.club,
+.centerSuit.club {
+    background-image: url("/suits/club.svg");
+}
+
+.suit.spade,
+.centerSuit.spade {
+    background-image: url("/suits/spade.svg");
+}
+
+.suit.skull,
+.centerSuit.skull {
+    background-image: url("/suits/skull.svg");
+}
+
+.flipCard {
+    perspective: 1000px;
+}
+
+.flipCardInner {
+    transition: transform 0.3s;
+    transform-style: preserve-3d;
+    width: 100%;
+    height: 100%;
+}
+
+.flipCardBack,
+.flipCardFront {
+    position: absolute;
+    backface-visibility: hidden;
+}
+
+.flipCardBack {
+    transform: rotateY(180deg);
+}
