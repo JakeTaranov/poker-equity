@@ -118,33 +118,36 @@ class Simulator:
         elif hand_2_strength > hand_1_strength:
             return 2
         else:
-            # if they are equal then we check the kickers 
-            # get the highest 3 unpaired cards from the board and the hands, return the sum of these.
-            hand_1_ranks = [rank for rank, _ in hand_1]
-            hand_2_ranks = [rank for rank, _ in hand_2]
+            # if pairs are equal we check the highest reamining 3 cards in the hands and board
+            
+            
+            # we know here hand_1_strength = hand_2_strength so we can use either 
+            hand_1_ranks = [rank for rank, _ in hand_1 if rank != hand_1_strength]
+            hand_2_ranks = [rank for rank, _ in hand_2 if rank != hand_1_strength]
             
             # # We must find the values of the 3 remaiing cards on the board
             board_rank_count = {}
             for rank, _ in board:
                 board_rank_count[rank] = board_rank_count.get(rank, 0) + 1
-            unique_in_board = [rank for rank, count in board_rank_count.items() if count == 1]
+            unique_in_board = [rank for rank, count in board_rank_count.items() if count == 1 and rank != hand_1_strength]
             
-            top_3_hand_1 = sum(sorted(hand_1_ranks + unique_in_board, reverse=True)[:3])
-            top_3_hand_2 = sum(sorted(hand_2_ranks + unique_in_board, reverse=True)[:3])    
-            top_3_board = sum(sorted(unique_in_board, reverse=True)[:3]) 
-                
-            # split
-            if top_3_hand_1 == top_3_hand_2 == top_3_board:
-                return 3
-            elif top_3_hand_1 > top_3_hand_2:
+            top_hand_1 = sorted(hand_1_ranks+unique_in_board, reverse=True)[:3]
+            top_hand_2 = sorted(hand_2_ranks+unique_in_board, reverse=True)[:3]            
+            return Simulator.check_high_card_winner(top_hand_1, top_hand_2)
+            
+            
+    @staticmethod 
+    def check_high_card_winner(hand_1_strength, hand_2_strength):
+        for h1, h2, in zip(hand_1_strength, hand_2_strength):
+            if h1 > h2:
                 return 1
-            elif top_3_hand_2 > top_3_hand_1:
+            elif h2 > h1:
                 return 2
-
-
+            else:
+                continue
+        return 3
+    
             
-    
-    
     
     @staticmethod
     def log(winner, hand_1, hand_2, board, how):
@@ -178,7 +181,7 @@ class Simulator:
                 # write logs
                 if self.debug and winner:
                     self.log(winner, self.hand_1, self.hand_2, board, "Royal Flush")
-                return winner, "royal_flush"
+                return str(winner), "royal_flush"
             
             
 
@@ -189,7 +192,7 @@ class Simulator:
                 # write logs
                 if self.debug and winner:
                     self.log(winner, self.hand_1, self.hand_2, board, "Straight Flush")
-                return winner, "straight_flush"
+                return str(winner), "straight_flush"
             
             
             
@@ -200,7 +203,7 @@ class Simulator:
                 # write logs
                 if self.debug and winner:
                     self.log(winner, self.hand_1, self.hand_2, board, "Four of a Kind")
-                return winner, "four_of_a_kind"
+                return str(winner), "four_of_a_kind"
             
             
             
@@ -211,7 +214,7 @@ class Simulator:
                 # write logs
                 if self.debug and winner:
                     self.log(winner, self.hand_1, self.hand_2, board, "Full House")
-                return winner, "full_house"
+                return str(winner), "full_house"
             
             
             
@@ -222,7 +225,7 @@ class Simulator:
                 # write logs
                 if self.debug and winner:
                     self.log(winner, self.hand_1, self.hand_2, board, "Flush")
-                return winner, "flush"
+                return str(winner), "flush"
             
             
             
@@ -233,7 +236,7 @@ class Simulator:
                 # write logs
                 if self.debug and winner:
                     self.log(winner, self.hand_1, self.hand_2, board, "Straight")
-                return winner, "straight"
+                return str(winner), "straight"
             
             
             
@@ -244,7 +247,7 @@ class Simulator:
                 # write logs
                 if self.debug and winner:
                     self.log(winner, self.hand_1, self.hand_2, board, "Three of a Kind")
-                return winner, "three_of_a_kind"
+                return str(winner), "three_of_a_kind"
             
             
             
@@ -255,7 +258,7 @@ class Simulator:
                 # write logs
                 if self.debug and winner:
                     self.log(winner, self.hand_1, self.hand_2, board, "Two Pair")
-                return winner, "two_pair" 
+                return str(winner), "two_pair" 
             
                    
             
@@ -266,7 +269,7 @@ class Simulator:
                 # write logs
                 if self.debug and winner:
                     self.log(winner, self.hand_1, self.hand_2, board, "Pair")
-                return winner, "pair"
+                return str(winner), "pair"
             
               
             
@@ -278,15 +281,13 @@ class Simulator:
                 # write logs
                 if self.debug and winner:
                     self.log(winner, self.hand_1, self.hand_2, board, "High Card")
-                return winner, "high"
+                return str(winner), "high"
             
     @staticmethod
-    def create_percentages(simulation_data, n):
-        final_simulation_data = {}
-        
-        final_simulation_data["hand_1_win_percentage"] = simulation_data["wins_splits"][1] / n * 100
-        final_simulation_data["hand_2_win_percentage"] = simulation_data["wins_splits"][2] / n * 100
-        final_simulation_data["split_percentage"] = simulation_data["wins_splits"][3] / n * 100        
+    def create_percentages(simulation_data, n):        
+        simulation_data["hand_1_win_percentage"] = simulation_data["wins_splits"]["1"] / n * 100
+        simulation_data["hand_2_win_percentage"] = simulation_data["wins_splits"]["2"] / n * 100
+        simulation_data["split_percentage"] = simulation_data["wins_splits"]["3"] / n * 100        
         
         for win_type, wins in simulation_data["hand_1_win_types"].items():
             simulation_data["hand_1_win_percentage_types"][win_type] = wins / n * 100
@@ -297,9 +298,6 @@ class Simulator:
         for win_type, wins in simulation_data["split_types"].items():
             simulation_data["split_percentage_types"][win_type] = wins / n * 100
         
-        final_simulation_data["hand_1_win_percentage_types"] = simulation_data["hand_1_win_percentage_types"]
-        final_simulation_data["hand_2_win_percentage_types"] = simulation_data["hand_2_win_percentage_types"]
-        final_simulation_data["split_percentage_types"] = simulation_data["split_percentage_types"]
         
             
         return simulation_data
@@ -364,9 +362,9 @@ class Simulator:
                     
             simulation_data["wins_splits"][winner] = simulation_data["wins_splits"].get(winner, 0) + 1
             
-            if winner == 1:
+            if winner == "1":
                 simulation_data["hand_1_win_types"][how] = simulation_data["hand_1_win_types"].get(how, 0) + 1    
-            elif winner == 2:
+            elif winner == "2":
                 simulation_data["hand_2_win_types"][how] = simulation_data["hand_2_win_types"].get(how, 0) + 1 
             else:
                 simulation_data["split_types"][how] = simulation_data["split_types"].get(how, 0) + 1 
@@ -375,70 +373,36 @@ class Simulator:
         return self.create_percentages(simulation_data, self.iterations)
             
             
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-                    
-                    
-            
-        
-# h1c1 = { "suit": "heart", "value": "Q", "rank": 3, "isPlayable": True }
-# h1c2 = { "suit": "spade", "value": "Q", "rank": 7, "isPlayable": True }
-# h1 = [(h1c1["rank"], h1c1["suit"]), (h1c2["rank"], h1c2["suit"])]
+def fast_test():
+    h1c1 = { "suit": "spade", "value": "Q", "rank": 12, "isPlayable": True }
+    h1c2 = { "suit": "spade", "value": "Q", "rank": 13, "isPlayable": True }
+    h1 = [(h1c1["rank"], h1c1["suit"]), (h1c2["rank"], h1c2["suit"])]
 
 
-# h2c1 = { "suit": "club", "value": "Q", "rank": 5, "isPlayable": True }
-# h2c2 = { "suit": "diamond", "value": "Q", "rank": 4, "isPlayable": True }
-# h2 = [(h2c1["rank"], h2c1["suit"]), (h2c2["rank"], h2c2["suit"])]
+    h2c1 = { "suit": "heart", "value": "Q", "rank": 14, "isPlayable": True }
+    h2c2 = { "suit": "spade", "value": "Q", "rank": 5, "isPlayable": True }
+    h2 = [(h2c1["rank"], h2c1["suit"]), (h2c2["rank"], h2c2["suit"])]
 
-# board_raw = [
-#     { "suit": "spade", "value": "Q", "rank": 11, "isPlayable": True },
-#     { "suit": "club", "value": "Q", "rank": 10, "isPlayable": True },
-#     { "suit": "diamond", "value": "Q", "rank": 11, "isPlayable": True },
-#     { "suit": "diamond", "value": "Q", "rank": 10, "isPlayable": True },
-#     { "suit": "heart", "value": "Q", "rank": 9, "isPlayable": True },
-# ]
+    # board_raw = [
+    #     { "suit": "spade", "value": "Q", "rank": 11, "isPlayable": True },
+    #     { "suit": "club", "value": "Q", "rank": 10, "isPlayable": True },
+    #     { "suit": "diamond", "value": "Q", "rank": 11, "isPlayable": True },
+    #     { "suit": "diamond", "value": "Q", "rank": 10, "isPlayable": True },
+    #     { "suit": "heart", "value": "Q", "rank": 9, "isPlayable": True },
+    # ]
 
-# board = [(board_raw[0]["rank"], board_raw[0]["suit"]), (board_raw[1]["rank"], board_raw[1]["suit"]), (board_raw[2]["rank"], board_raw[2]["suit"]), (board_raw[3]["rank"], board_raw[3]["suit"]), (board_raw[4]["rank"], board_raw[4]["suit"])]
+    # board = [(board_raw[0]["rank"], board_raw[0]["suit"]), (board_raw[1]["rank"], board_raw[1]["suit"]), (board_raw[2]["rank"], board_raw[2]["suit"]), (board_raw[3]["rank"], board_raw[3]["suit"]), (board_raw[4]["rank"], board_raw[4]["suit"])]
+
+    board =  [(3, 'diamond'), (10, 'diamond'), (7, 'spade'), (2, 'heart'), (10, 'spade')]
+    n = 1
+    s = Simulator(n, h1, h2, True, board=board)
+    data = s.simulate()
 
 
-# n = 100000
-# s = Simulator(n, h1, h2, False)
-# data = s.simulate()
+    pprint.pprint(data)
 
-# pprint.pprint(data)
+    print("Hand 1 wins:", data["wins_splits"]["1"]/n * 100)
+    print("Hand 2 wins:", data["wins_splits"]["2"]/n * 100)
+    print("Splits:", data["wins_splits"]["3"]/n * 100)
 
-# print("Hand 1 wins:", data["wins_splits"][1]/n * 100)
-# print("Hand 2 wins:", data["wins_splits"][2]/n * 100)
-# print("Splits:", data["wins_splits"][3]/n * 100)
 
