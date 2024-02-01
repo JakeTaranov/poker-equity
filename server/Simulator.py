@@ -2,7 +2,8 @@ from HandChecker import HandChecker
 from cards import cards as deck
 import random
 import pprint
-
+import random
+import os
 
 # simualte hand_1 and hand_2 on the respected board 
 class Simulator:
@@ -13,10 +14,12 @@ class Simulator:
         self.debug = debug
         self.board = board
         
-        
-    @staticmethod
-    def create_board(deck, hand_1, hand_2):
+    
+    @staticmethod 
+    def create_board_of_five(deck, hand_1, hand_2):
         # creating random indexs to pull from deck
+        
+        print("CREATING DECK OF 5")
         random_idxs = random.sample(range(52), 51)
         board = []
         added = 0
@@ -33,6 +36,57 @@ class Simulator:
             added += 1
             
         return board
+    
+    @staticmethod 
+    def create_board_of_n(deck, hand_1, hand_2, existing_board):
+        
+        cards_to_make = existing_board.count((0, ""))
+      #  print("CREATING DECK OF ", cards_to_make)
+        
+        random_idxs = random.sample(range(52), 51)
+
+        added = 0
+        
+        rest_of_board = []
+        
+        for idx in random_idxs:
+            
+            cur_card = ((deck[idx]["rank"], deck[idx]["suit"]))
+            # make sure we are not using the same card twice
+            if cur_card == hand_1[0] or cur_card == hand_1[1] or cur_card == hand_2[0] or cur_card == hand_2[1] or cur_card == existing_board[0] or cur_card == existing_board[1] or cur_card == existing_board[2] or cur_card == existing_board[3] or cur_card == existing_board[4]:
+                continue
+            
+            elif added == cards_to_make:
+                break
+            
+            rest_of_board.append(cur_card)
+            added += 1
+        
+
+        existing_board = existing_board + rest_of_board
+
+        # removing the (0, "") entires
+        for _ in range(cards_to_make): 
+            existing_board.remove((0, ""))
+            
+     #   print("BOARD MADE", existing_board)
+        return existing_board
+        
+            
+        
+    @staticmethod
+    def create_board(deck, hand_1, hand_2, existing_board=None):
+            
+        if not existing_board:
+            return Simulator.create_board_of_five(deck, hand_1, hand_2)
+            # We want to make a board of 5
+        else:
+            return Simulator.create_board_of_n(deck, hand_1, hand_2, existing_board)
+            # we want to make a board to fill up the reamining card spots left on the board
+            
+
+        
+    
     
     @staticmethod
     def check_generic_winner(hand_1_strength, hand_2_strength):
@@ -307,7 +361,11 @@ class Simulator:
     def simulate(self):    
         
         simulation_data = {
-            "wins_splits": {},
+            "wins_splits": {
+                "1": 0,
+                "2": 0,
+                "3": 0
+                },
             "hand_1_win_types": {
                 "royal_flush": 0,
                 "straight_flush": 0,
@@ -347,17 +405,18 @@ class Simulator:
         }
 
         for i in range(self.iterations):
-            
+            #random.seed(os.urandom(16))
             #shuffle the deck
             random.shuffle(deck)
-            
-            # if we pass in out own board
+            # if we pass in out own board, for when there is a flop etc. Create the remaining cards for the board if the user passed one in
             if self.board:
-                board = self.board
+                #print("HERE")
+                board = self.create_board(deck, self.hand_1, self.hand_2, self.board)
+
             else:
-                #create the 5 card playing board
+                #create the 5 card playing board without the board passed by user
                 board = self.create_board(deck, self.hand_1, self.hand_2)
-                
+            
             winner, how = self.simulate_hand(board)
                     
             simulation_data["wins_splits"][winner] = simulation_data["wins_splits"].get(winner, 0) + 1
@@ -369,19 +428,25 @@ class Simulator:
             else:
                 simulation_data["split_types"][how] = simulation_data["split_types"].get(how, 0) + 1 
 
-        
         return self.create_percentages(simulation_data, self.iterations)
             
             
+            
+            
+            
+            
+            
+            
+            
 def fast_test():
-    h1c1 = { "suit": "spade", "value": "Q", "rank": 12, "isPlayable": True }
-    h1c2 = { "suit": "spade", "value": "Q", "rank": 13, "isPlayable": True }
-    h1 = [(h1c1["rank"], h1c1["suit"]), (h1c2["rank"], h1c2["suit"])]
+    # h1c1 = { "suit": "club", "value": "Q", "rank": 6, "isPlayable": True }
+    # h1c2 = { "suit": "spade", "value": "Q", "rank": 5, "isPlayable": True }
+    # h1 = [(h1c1["rank"], h1c1["suit"]), (h1c2["rank"], h1c2["suit"])]
 
 
-    h2c1 = { "suit": "heart", "value": "Q", "rank": 14, "isPlayable": True }
-    h2c2 = { "suit": "spade", "value": "Q", "rank": 5, "isPlayable": True }
-    h2 = [(h2c1["rank"], h2c1["suit"]), (h2c2["rank"], h2c2["suit"])]
+    # h2c1 = { "suit": "heart", "value": "Q", "rank": 12, "isPlayable": True }
+    # h2c2 = { "suit": "spade", "value": "Q", "rank": 13, "isPlayable": True }
+    # h2 = [(h2c1["rank"], h2c1["suit"]), (h2c2["rank"], h2c2["suit"])]
 
     # board_raw = [
     #     { "suit": "spade", "value": "Q", "rank": 11, "isPlayable": True },
@@ -391,11 +456,17 @@ def fast_test():
     #     { "suit": "heart", "value": "Q", "rank": 9, "isPlayable": True },
     # ]
 
-    # board = [(board_raw[0]["rank"], board_raw[0]["suit"]), (board_raw[1]["rank"], board_raw[1]["suit"]), (board_raw[2]["rank"], board_raw[2]["suit"]), (board_raw[3]["rank"], board_raw[3]["suit"]), (board_raw[4]["rank"], board_raw[4]["suit"])]
+    # board = [(11, "heart"), (10, "spade"), (9, "spade"), (0, ""), (0, "")]
+    
+    
+    h1 = [(11, 'diamond'), (5, 'club')]
+    h2 = [(10, 'club'), (5, 'club')]
+    board = [(5, 'spade'), (7, 'club'), (8, 'spade'), (12, 'club'), (12, 'diamond')]
 
-    board =  [(3, 'diamond'), (10, 'diamond'), (7, 'spade'), (2, 'heart'), (10, 'spade')]
+
+
     n = 1
-    s = Simulator(n, h1, h2, True, board=board)
+    s = Simulator(n, h1, h2, False, board=board)
     data = s.simulate()
 
 
@@ -406,3 +477,4 @@ def fast_test():
     print("Splits:", data["wins_splits"]["3"]/n * 100)
 
 
+#fast_test()
