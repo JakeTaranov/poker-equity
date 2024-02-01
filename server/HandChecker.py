@@ -1,5 +1,15 @@
 class HandChecker():
     
+    def __init__(self, player_cards, board):
+        self.player_cards = player_cards
+        self.board = board
+        self.board_and_player_cards = player_cards + board
+        self.all_ranks = [rank for rank, _ in self.board_and_player_cards]
+        self.all_rank_counts = self.generate_rank_counts(self.board_and_player_cards)        
+        self.player_cards_ranks = [rank for rank, _ in self.player_cards]
+        self.all_suit_counts = self.generate_suit_counts(self.board_and_player_cards)
+        
+    
     @staticmethod
     def generate_rank_counts(cards):
         rank_counts = {}
@@ -24,19 +34,9 @@ class HandChecker():
             
             
         return suit_counts
-        
-        
-    def __init__(self, player_cards, board):
-        self.player_cards = player_cards
-        self.board = board
-        self.board_and_player_cards = player_cards + board
-        self.all_ranks = [rank for rank, _ in self.board_and_player_cards]
-        self.all_rank_counts = self.generate_rank_counts(self.board_and_player_cards)        
-        self.player_cards_ranks = [rank for rank, _ in self.player_cards]
-        self.all_suit_counts = self.generate_suit_counts(self.board_and_player_cards)
     
     def high_card(self):
-        return sum(sorted(self.all_ranks, reverse=True)[:5])
+        return sorted(self.all_ranks, reverse=True)[:5]
 
     @staticmethod
     def pair_helper(player_cards, board, ranks):
@@ -150,11 +150,13 @@ class HandChecker():
         for i in range(len(rank_set) - 4):
             #check to see if there is any straight
             if rank_set[i] == rank_set[i + 1] - 1 == rank_set[i + 2] - 2 == rank_set[i + 3] - 3 == rank_set[i + 4] - 4:
-                straight_score = max(straight_score ,rank_set[i] + rank_set[i+1] + rank_set[i+2] + rank_set[i+3] + rank_set[i+4])
+                straight_score = max(straight_score , rank_set[i] + rank_set[i+1] + rank_set[i+2] + rank_set[i+3] + rank_set[i+4])
         
+        if straight_score:
+            return straight_score
         #check to see if there is an ace -> 5 straight
         if rank_set[-1] == 14 and rank_set[0] == 2 and rank_set[1] == 3 and rank_set[2] == 4 and rank_set[3] == 5:
-            straight_score = max(straight_score ,rank_set[i] + rank_set[i+1] + rank_set[i+2] + rank_set[i+3] + rank_set[i+4])
+            straight_score = max(straight_score , rank_set[i] + rank_set[i+1] + rank_set[i+2] + rank_set[i+3] + rank_set[i+4])
         
         return straight_score
 

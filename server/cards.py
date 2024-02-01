@@ -52,3 +52,5 @@ cards = [
     { "suit": "club", "value": "K", "rank": 13, "isPlayable": True },
     { "suit": "club", "value": "A", "rank": 14, "isPlayable": True },
 ];
+
+

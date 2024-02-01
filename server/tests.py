@@ -487,33 +487,6 @@ class TestHandChecker(unittest.TestCase):
         
         
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
     def test_high_card_draw(self):
         board = [(6, "spade"), (5, 'spade'), (7, 'spade'), (8, 'spade'), (9, 'spade'),]
         hand_1 = [(2, "spade"),(1, "heart")]

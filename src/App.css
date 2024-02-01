@@ -22,7 +22,8 @@
 }
 
 /* .playersHandContainer {
-    display: flex;
+    display: block;
+    width: 300px;
 } */
 
 .playersHand {
@@ -30,6 +31,14 @@
     gap: 10px;
     grid-template-columns: repeat(2, 4em);
     justify-content: center;
+}
+
+.boardCards {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(5, 3em);
+    /* grid-template-rows: repeat(1, 3em); */
+    /* justify-content: center; */
 }
 
 .cardSelectButton {
@@ -51,12 +60,19 @@
     align-items: center;
 }
 
+.chartsContainer {
+    /* background-color: rgba(18, 173, 65, 0.441); */
+    border: 1px solid white;
+    padding: 20px 20px 20px 20px;
+    border-radius: 20px;
+}
+
 
 .barContainer {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 255, 0, 0.5);
+    /* background-color: rgba(0, 255, 0, 0.5); */
     border-radius: 50px;
     margin: 20px 20px 20px 20px;
     padding: 20px 20px 20px 20px;
@@ -68,14 +84,14 @@
 }
 
 .pieContainerHand1 {
-    background-color: rgba(0, 0, 255, 0.6);
+    /* background-color: rgba(0, 0, 255, 0.6); */
     border-radius: 50px;
     margin: 50px 20px 20px 20px;
     padding: 20px 20px 20px 20px;
 }
 
 .pieContainerHand2 {
-    background-color: rgba(255, 0, 0, 0.6);
+    /* background-color: rgba(255, 0, 0, 0.6); */
     border-radius: 50px;
     margin: 50px 20px 20px 20px;
     padding: 20px 20px 20px 20px;

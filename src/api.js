@@ -18,13 +18,12 @@ export function fetchDataFromFastAPI() {
 }
 
 
-export function genereateOdds(h1c1, h1c2, h2c1, h2c2) {
-    const hand_1 = [h1c1, h1c2]
-    const hand_2 = [h2c1, h2c2]
+export function genereateOdds(hand_1, hand_2, board) {
 
     const hands_payload = {
         hand_1: hand_1,
-        hand_2: hand_2
+        hand_2: hand_2,
+        board: board,
     }
 
     return fetch('http://localhost:8000/evaluate_hands' ,{
