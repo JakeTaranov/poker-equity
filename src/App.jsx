@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import Card from "./components/Card/Card";
-import CardDimmed from "./components/Card/CardDimmed";
 
 import { cards } from "./components/Card/cardList";
 import { genereateOdds } from "./api";
@@ -10,31 +9,58 @@ import { Bar, Pie } from "react-chartjs-2";
 import GridLoader from "react-spinners/GridLoader";
 
 function App() {
+  // Hand Cards
   const [h1Card1, setH1Card1] = useState({
-    value: null,
-    suit: null,
-    rank: null,
+    value: "",
+    suit: "",
+    rank: 0,
   });
   const [h1Card2, setH1Card2] = useState({
-    value: null,
-    suit: null,
-    rank: null,
-    rank: null,
+    value: "",
+    suit: "",
+    rank: 0,
   });
   const [h2Card1, setH2Card1] = useState({
-    value: null,
-    suit: null,
-    rank: null,
+    value: "",
+    suit: "",
+    rank: 0,
   });
   const [h2Card2, setH2Card2] = useState({
-    value: null,
-    suit: null,
-    rank: null,
+    value: "",
+    suit: "",
+    rank: 0,
   });
+  // Board Cards
+  const [b1Card, setB1Card] = useState({
+    value: "",
+    suit: "",
+    rank: 0,
+  });
+  const [b2Card, setB2Card] = useState({
+    value: "",
+    suit: "",
+    rank: 0,
+  });
+  const [b3Card, setB3Card] = useState({
+    value: "",
+    suit: "",
+    rank: 0,
+  });
+  const [b4Card, setB4Card] = useState({
+    value: "",
+    suit: "",
+    rank: 0,
+  });
+  const [b5Card, setB5Card] = useState({
+    value: "",
+    suit: "",
+    rank: 0,
+  });
+  const [board, setBoard] = useState([]);
   const [selectedCard, setSelectedCard] = useState({
-    value: null,
-    suit: null,
-    rank: null,
+    value: "",
+    suit: "",
+    rank: 0,
   });
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -56,14 +82,41 @@ function App() {
   ];
 
   const bar_colors = ["#008000", "#0000FF", "#FF0000"];
-  
+
   // Whenever h1 or h2 changes, we update the selected cards to dimm them
   useEffect(() => {
     // Update the list of cards selected
-    const tempSelectedCardsList = [h1Card1, h1Card2, h2Card1, h2Card2];
+    const tempSelectedCardsList = [
+      h1Card1,
+      h1Card2,
+      h2Card1,
+      h2Card2,
+      b1Card,
+      b2Card,
+      b3Card,
+      b4Card,
+      b5Card,
+    ];
+    const tempBoardList = [
+        b1Card,
+        b2Card,
+        b3Card,
+        b4Card,
+        b5Card,
+    ]
     setSelectedCardsList(tempSelectedCardsList);
-    console.log(selectedCardsList);
-  }, [h1Card1, h1Card2, h2Card1, h2Card2]);
+    setBoard(tempBoardList)
+  }, [
+    h1Card1,
+    h1Card2,
+    h2Card1,
+    h2Card2,
+    b1Card,
+    b2Card,
+    b3Card,
+    b4Card,
+    b5Card,
+  ]);
 
   const updateSelectedCard = (cardIndex) => {
     console.log(
@@ -109,8 +162,38 @@ function App() {
         suit: selectedCard.suit,
         rank: selectedCard.rank,
       });
-    } else {
+    } else if (selected == "h2c2") {
       setH2Card2({
+        value: selectedCard.value,
+        suit: selectedCard.suit,
+        rank: selectedCard.rank,
+      });
+    } else if (selected == "b1") {
+      setB1Card({
+        value: selectedCard.value,
+        suit: selectedCard.suit,
+        rank: selectedCard.rank,
+      });
+    } else if (selected == "b2") {
+      setB2Card({
+        value: selectedCard.value,
+        suit: selectedCard.suit,
+        rank: selectedCard.rank,
+      });
+    } else if (selected == "b3") {
+      setB3Card({
+        value: selectedCard.value,
+        suit: selectedCard.suit,
+        rank: selectedCard.rank,
+      });
+    } else if (selected == "b4") {
+      setB4Card({
+        value: selectedCard.value,
+        suit: selectedCard.suit,
+        rank: selectedCard.rank,
+      });
+    } else if (selected == "b5") {
+      setB5Card({
         value: selectedCard.value,
         suit: selectedCard.suit,
         rank: selectedCard.rank,
@@ -119,12 +202,12 @@ function App() {
   };
 
   const genereateOddsFromApi = async () => {
+    console.log(board)
     setLoading(true);
     var simulation_data = await genereateOdds(
-      h1Card1,
-      h1Card2,
-      h2Card1,
-      h2Card2
+      [h1Card1, h1Card2],
+      [h2Card1, h2Card2],
+      board,
     );
     simulation_data = JSON.parse(simulation_data);
     setStats(simulation_data);
@@ -161,14 +244,7 @@ function App() {
                     onClick={() => updateSelectedCard(index)}
                   ></button>
 
-                  {check_card_in_selected(index) ? (
-                    <CardDimmed
-                      suit={card.suit}
-                      value={card.value}
-                    ></CardDimmed>
-                  ) : (
-                    <Card suit={card.suit} value={card.value}></Card>
-                  )}
+                    <Card suit={card.suit} value={card.value} isDimmed={check_card_in_selected(index)}></Card>
                 </div>
               ))}
             </div>
@@ -188,6 +264,37 @@ function App() {
                 ></button>
                 <Card suit={h1Card1.suit} value={h1Card1.value}></Card>
                 <Card suit={h1Card2.suit} value={h1Card2.value}></Card>
+              </div>
+            </div>
+
+            <div>
+              <p> Board </p>
+              <div className="boardCards">
+                <button
+                  className="cardSelectButton"
+                  onClick={() => updateCurrentSelectedPlayerCard("b1")}
+                ></button>
+                <button
+                  className="cardSelectButton"
+                  onClick={() => updateCurrentSelectedPlayerCard("b2")}
+                ></button>
+                <button
+                  className="cardSelectButton"
+                  onClick={() => updateCurrentSelectedPlayerCard("b3")}
+                ></button>
+                <button
+                  className="cardSelectButton"
+                  onClick={() => updateCurrentSelectedPlayerCard("b4")}
+                ></button>
+                <button
+                  className="cardSelectButton"
+                  onClick={() => updateCurrentSelectedPlayerCard("b5")}
+                ></button>
+                <Card suit={b1Card.suit} value={b1Card.value}></Card>
+                <Card suit={b2Card.suit} value={b2Card.value}></Card>
+                <Card suit={b3Card.suit} value={b3Card.value}></Card>
+                <Card suit={b4Card.suit} value={b4Card.value}></Card>
+                <Card suit={b5Card.suit} value={b5Card.value}></Card>
               </div>
             </div>
 
@@ -212,192 +319,205 @@ function App() {
         <button onClick={() => genereateOddsFromApi()}>GENERATE ODDS</button>
         <div className="loadingIcon">
           {loading && (
-            <GridLoader color={"#023020"} loading={loading} size={25} />
+            <GridLoader color={"#0C855B"} loading={loading} size={25} />
           )}
         </div>
         <div>
           {stats && !loading && (
             <>
-              <div className="barContainer">
-                <Bar
-                  options={{
-                    plugins: {
-                      title: {
-                        display: true,
-                        text: "Win / Split Percentages",
-                        color: "#FFFFFF",
-                      },
-                      legend: {
-                        display: false,
-                      },
-                    },
-                  }}
-                  data={{
-                    labels: ["Split", "Hand 1", "Hand 2"],
-                    datasets: [
-                      {
-                        label: ["Wins / Splits"],
-                        data: [
-                          parseFloat(stats["split_percentage"]).toFixed(2),
-                          parseFloat(stats["hand_1_win_percentage"]).toFixed(2),
-                          parseFloat(stats["hand_2_win_percentage"]).toFixed(2),
-                        ],
-                        borderRadius: 30,
-                        backgroundColor: bar_colors,
-                      },
-                    ],
-                  }}
-                />
-              </div>
-              <div className="pieContainerGrid">
-                <div className="pieContainerHand1">
-                  <Pie
+              <div className="chartsContainer">
+                <div className="barContainer">
+                  <Bar
                     options={{
                       plugins: {
                         title: {
                           display: true,
-                          text: "Hand 1 Wins",
+                          text: "Win / Split Percentages",
                           color: "#FFFFFF",
+                        },
+                        legend: {
+                          display: false,
+                        },
+                        labels: {
+                          fontColor: "#FFFFFF",
                         },
                       },
                     }}
                     data={{
-                      labels: [
-                        "Royal Flush",
-                        "Straight Flush",
-                        "Four of a Kind",
-                        "Full House",
-                        "Flush",
-                        "Straight",
-                        "Three of A Kind",
-                        "Two Pair",
-                        "Pair",
-                        "High Card",
-                      ],
+                      labels: ["Split", "Hand 1", "Hand 2"],
                       datasets: [
                         {
-                          label: "Hand 1",
+                          label: ["Wins / Splits"],
                           data: [
-                            parseFloat(
-                              stats["hand_1_win_percentage_types"][
-                                "royal_flush"
-                              ]
-                            ).toFixed(2),
-                            parseFloat(
-                              stats["hand_1_win_percentage_types"][
-                                "straight_flush"
-                              ]
-                            ).toFixed(2),
-                            parseFloat(
-                              stats["hand_1_win_percentage_types"][
-                                "four_of_a_kind"
-                              ]
-                            ).toFixed(2),
-                            parseFloat(
-                              stats["hand_1_win_percentage_types"]["full_house"]
-                            ).toFixed(2),
-                            parseFloat(
-                              stats["hand_1_win_percentage_types"]["flush"]
-                            ).toFixed(2),
-                            parseFloat(
-                              stats["hand_1_win_percentage_types"]["straight"]
-                            ).toFixed(2),
-                            parseFloat(
-                              stats["hand_1_win_percentage_types"][
-                                "three_of_a_kind"
-                              ]
-                            ).toFixed(2),
-                            parseFloat(
-                              stats["hand_1_win_percentage_types"]["two_pair"]
-                            ).toFixed(2),
-                            parseFloat(
-                              stats["hand_1_win_percentage_types"]["pair"]
-                            ).toFixed(2),
-                            parseFloat(
-                              stats["hand_1_win_percentage_types"]["high"]
-                            ).toFixed(2),
+                            parseFloat(stats["split_percentage"]).toFixed(2),
+                            parseFloat(stats["hand_1_win_percentage"]).toFixed(
+                              2
+                            ),
+                            parseFloat(stats["hand_2_win_percentage"]).toFixed(
+                              2
+                            ),
                           ],
-                          borderRadius: 5,
-                          backgroundColor: pie_chart_colors,
+                          borderRadius: 30,
+                          backgroundColor: bar_colors,
                         },
                       ],
                     }}
                   />
                 </div>
+                <div className="pieContainerGrid">
+                  <div className="pieContainerHand1">
+                    <Pie
+                      options={{
+                        plugins: {
+                          title: {
+                            display: true,
+                            text: "Hand 1 Wins",
+                            color: "#FFFFFF",
+                          },
+                        },
+                      }}
+                      data={{
+                        labels: [
+                          "Royal Flush",
+                          "Straight Flush",
+                          "Four of a Kind",
+                          "Full House",
+                          "Flush",
+                          "Straight",
+                          "Three of A Kind",
+                          "Two Pair",
+                          "Pair",
+                          "High Card",
+                        ],
+                        datasets: [
+                          {
+                            label: "Hand 1",
+                            data: [
+                              parseFloat(
+                                stats["hand_1_win_percentage_types"][
+                                  "royal_flush"
+                                ]
+                              ).toFixed(2),
+                              parseFloat(
+                                stats["hand_1_win_percentage_types"][
+                                  "straight_flush"
+                                ]
+                              ).toFixed(2),
+                              parseFloat(
+                                stats["hand_1_win_percentage_types"][
+                                  "four_of_a_kind"
+                                ]
+                              ).toFixed(2),
+                              parseFloat(
+                                stats["hand_1_win_percentage_types"][
+                                  "full_house"
+                                ]
+                              ).toFixed(2),
+                              parseFloat(
+                                stats["hand_1_win_percentage_types"]["flush"]
+                              ).toFixed(2),
+                              parseFloat(
+                                stats["hand_1_win_percentage_types"]["straight"]
+                              ).toFixed(2),
+                              parseFloat(
+                                stats["hand_1_win_percentage_types"][
+                                  "three_of_a_kind"
+                                ]
+                              ).toFixed(2),
+                              parseFloat(
+                                stats["hand_1_win_percentage_types"]["two_pair"]
+                              ).toFixed(2),
+                              parseFloat(
+                                stats["hand_1_win_percentage_types"]["pair"]
+                              ).toFixed(2),
+                              parseFloat(
+                                stats["hand_1_win_percentage_types"]["high"]
+                              ).toFixed(2),
+                            ],
+                            borderRadius: 5,
+                            backgroundColor: pie_chart_colors,
+                          },
+                        ],
+                      }}
+                    />
+                  </div>
 
-                <div className="pieContainerHand2">
-                  <Pie
-                    options={{
-                      plugins: {
-                        title: {
-                          display: true,
-                          text: "Hand 2 Wins",
-                          color: "#FFFFFF",
+                  <div className="pieContainerHand2">
+                    <Pie
+                      options={{
+                        plugins: {
+                          title: {
+                            display: true,
+                            text: "Hand 2 Wins",
+                            color: "#FFFFFF",
+                          },
                         },
-                      },
-                    }}
-                    data={{
-                      labels: [
-                        "Royal Flush",
-                        "Straight Flush",
-                        "Four of a Kind",
-                        "Full House",
-                        "Flush",
-                        "Straight",
-                        "Three of A Kind",
-                        "Two Pair",
-                        "Pair",
-                        "High Card",
-                      ],
-                      datasets: [
-                        {
-                          label: "Hand 2",
-                          data: [
-                            parseFloat(
-                              stats["hand_2_win_percentage_types"][
-                                "royal_flush"
-                              ]
-                            ).toFixed(2),
-                            parseFloat(
-                              stats["hand_2_win_percentage_types"][
-                                "straight_flush"
-                              ]
-                            ).toFixed(2),
-                            parseFloat(
-                              stats["hand_2_win_percentage_types"][
-                                "four_of_a_kind"
-                              ]
-                            ).toFixed(2),
-                            parseFloat(
-                              stats["hand_2_win_percentage_types"]["full_house"]
-                            ).toFixed(2),
-                            parseFloat(
-                              stats["hand_2_win_percentage_types"]["flush"]
-                            ).toFixed(2),
-                            parseFloat(
-                              stats["hand_2_win_percentage_types"]["straight"]
-                            ).toFixed(2),
-                            parseFloat(
-                              stats["hand_2_win_percentage_types"][
-                                "three_of_a_kind"
-                              ]
-                            ).toFixed(2),
-                            parseFloat(
-                              stats["hand_2_win_percentage_types"]["two_pair"]
-                            ).toFixed(2),
-                            parseFloat(
-                              stats["hand_2_win_percentage_types"]["pair"]
-                            ).toFixed(2),
-                            parseFloat(
-                              stats["hand_2_win_percentage_types"]["high"]
-                            ).toFixed(2),
-                          ],
-                          borderRadius: 5,
-                          backgroundColor: pie_chart_colors,
-                        },
-                      ],
-                    }}
-                  />
+                      }}
+                      data={{
+                        labels: [
+                          "Royal Flush",
+                          "Straight Flush",
+                          "Four of a Kind",
+                          "Full House",
+                          "Flush",
+                          "Straight",
+                          "Three of A Kind",
+                          "Two Pair",
+                          "Pair",
+                          "High Card",
+                        ],
+                        datasets: [
+                          {
+                            label: "Hand 2",
+                            data: [
+                              parseFloat(
+                                stats["hand_2_win_percentage_types"][
+                                  "royal_flush"
+                                ]
+                              ).toFixed(2),
+                              parseFloat(
+                                stats["hand_2_win_percentage_types"][
+                                  "straight_flush"
+                                ]
+                              ).toFixed(2),
+                              parseFloat(
+                                stats["hand_2_win_percentage_types"][
+                                  "four_of_a_kind"
+                                ]
+                              ).toFixed(2),
+                              parseFloat(
+                                stats["hand_2_win_percentage_types"][
+                                  "full_house"
+                                ]
+                              ).toFixed(2),
+                              parseFloat(
+                                stats["hand_2_win_percentage_types"]["flush"]
+                              ).toFixed(2),
+                              parseFloat(
+                                stats["hand_2_win_percentage_types"]["straight"]
+                              ).toFixed(2),
+                              parseFloat(
+                                stats["hand_2_win_percentage_types"][
+                                  "three_of_a_kind"
+                                ]
+                              ).toFixed(2),
+                              parseFloat(
+                                stats["hand_2_win_percentage_types"]["two_pair"]
+                              ).toFixed(2),
+                              parseFloat(
+                                stats["hand_2_win_percentage_types"]["pair"]
+                              ).toFixed(2),
+                              parseFloat(
+                                stats["hand_2_win_percentage_types"]["high"]
+                              ).toFixed(2),
+                            ],
+                            borderRadius: 5,
+                            backgroundColor: pie_chart_colors,
+                          },
+                        ],
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
             </>
