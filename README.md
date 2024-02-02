@@ -1,1 +1,1 @@
-## Poker Hand Odds Calculation Using Monte Carlo Method
+## Texas Holdem Odds Calculator via Monte Carlo Simulation
