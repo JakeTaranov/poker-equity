@@ -5,13 +5,37 @@
   text-align: center;
 }
 
+
+.generalButton{
+    display: inline-block;
+    outline: 0;
+    cursor: pointer;
+    border: 2px solid #000;
+    border-radius: 3px;
+    color: #fff;
+    background: #000;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+    padding: 12px 20px;
+    text-align: center;
+    transition-duration: .15s;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(.4, 0, .2, 1);
+    margin: 10px 10px 10px 10px;
+}
+
+.generalButton:hover {
+    color: #000;
+    background: rgb(49, 222, 81);
+}
+
 /* .allCardsDisplayContainer {
     display: flex;
 } */
 
 .entireDisplayGrid {
     display: flex;
-    align-self: center;
     justify-content: center;
 }
 
@@ -20,37 +44,40 @@
     grid-template-columns: repeat(13, 3.5em);
     padding: 0px 50px 100px 0px
 }
-
-/* .playersHandContainer {
+/* 
+.playersHandContainer {
     display: block;
-    width: 300px;
-} */
+    align-items: center;
+    justify-content: center;
+}    */
 
 .playersHand {
     display: grid;
     gap: 10px;
     grid-template-columns: repeat(2, 4em);
     justify-content: center;
+    align-items: center;
 }
 
 .boardCards {
     display: grid;
     gap: 10px;
     grid-template-columns: repeat(5, 3em);
+    align-items: center;
     /* grid-template-rows: repeat(1, 3em); */
     /* justify-content: center; */
 }
 
 .cardSelectButton {
     z-index: 3;
-    height: 75px;
-    width: 40px;
+    height: 70px;
+    width: 50px;
     opacity: 0%;
     margin-top: -100px;
     margin-bottom: -100px;
     background-color: red; 
     position: relative;
-    top: 75px
+    top: 65px
 }
 
 .pieContainerGrid {

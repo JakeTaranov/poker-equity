@@ -19,7 +19,6 @@ class Simulator:
     def create_board_of_five(deck, hand_1, hand_2):
         # creating random indexs to pull from deck
         
-        print("CREATING DECK OF 5")
         random_idxs = random.sample(range(52), 51)
         board = []
         added = 0
@@ -41,7 +40,6 @@ class Simulator:
     def create_board_of_n(deck, hand_1, hand_2, existing_board):
         
         cards_to_make = existing_board.count((0, ""))
-      #  print("CREATING DECK OF ", cards_to_make)
         
         random_idxs = random.sample(range(52), 51)
 
