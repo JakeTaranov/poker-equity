@@ -1,7 +1,7 @@
 # Texas Holdem Odds Calculator via Monte Carlo Simulation
 
 ## Overview
-The application is designed to predict the outcomes of poker hands using a Monte Carlo Simulation, a statistical method known for its accuracy in predicting complex outcomes. With this tool, users can input specific cards for each player and, optionally, community cards (flop, turn, and river) to simulate various poker scenarios.
+The application is designed to predict the outcomes of poker hands using a [Monte Carlo Simulation](https://en.wikipedia.org/wiki/Monte_Carlo_method), a statistical method known for its accuracy in predicting complex outcomes. With this tool, users can input specific cards for each player and, optionally, community cards (flop, turn, and river) to simulate various poker scenarios.
 
 The simulation runs 100,000 iterations, providing statistically signifigant results for the context of predicting the probabilities of different hands winning under given conditions.
 
