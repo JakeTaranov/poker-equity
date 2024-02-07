@@ -1,7 +1,0 @@
-- Fix UI 
-- Seperate Components -> (added graphs to own compoenent)
-- Fix mongo password -> done
-- Add clear all button -> done
-- clean up code generally
-- add input validation -> done
-- fix buttons
