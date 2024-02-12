@@ -231,7 +231,7 @@ class Simulator:
             winner = self.check_generic_winner(hand_1_royal_flush, hand_2_royal_flush)
             if winner:
                 # write logs
-                if self.debug and winner:
+                if self.debug:
                     self.log(winner, self.hand_1, self.hand_2, board, "Royal Flush")
                 return str(winner), "royal_flush"
             
@@ -242,7 +242,7 @@ class Simulator:
             winner = self.check_generic_winner(hand_1_straight_flush, hand_2_straight_flush)
             if winner:
                 # write logs
-                if self.debug and winner:
+                if self.debug:
                     self.log(winner, self.hand_1, self.hand_2, board, "Straight Flush")
                 return str(winner), "straight_flush"
             
@@ -253,7 +253,7 @@ class Simulator:
             winner = self.check_generic_winner(hand_1_four_of_a_kind, hand_2_four_of_a_kind)
             if winner:
                 # write logs
-                if self.debug and winner:
+                if self.debug:
                     self.log(winner, self.hand_1, self.hand_2, board, "Four of a Kind")
                 return str(winner), "four_of_a_kind"
             
@@ -264,7 +264,7 @@ class Simulator:
             winner = self.check_generic_winner(hand_1_full_house, hand_2_full_house)
             if winner:
                 # write logs
-                if self.debug and winner:
+                if self.debug:
                     self.log(winner, self.hand_1, self.hand_2, board, "Full House")
                 return str(winner), "full_house"
             
@@ -275,7 +275,7 @@ class Simulator:
             winner = self.check_generic_winner(hand_1_flush, hand_2_flush)
             if winner:
                 # write logs
-                if self.debug and winner:
+                if self.debug:
                     self.log(winner, self.hand_1, self.hand_2, board, "Flush")
                 return str(winner), "flush"
             
@@ -286,7 +286,7 @@ class Simulator:
             winner = self.check_generic_winner(hand_1_straight, hand_2_straight)
             if winner:
                 # write logs
-                if self.debug and winner:
+                if self.debug:
                     self.log(winner, self.hand_1, self.hand_2, board, "Straight")
                 return str(winner), "straight"
             
@@ -297,7 +297,7 @@ class Simulator:
             winner = self.check_generic_winner(hand_1_three_of_a_kind, hand_2_three_of_a_kind)
             if winner:
                 # write logs
-                if self.debug and winner:
+                if self.debug:
                     self.log(winner, self.hand_1, self.hand_2, board, "Three of a Kind")
                 return str(winner), "three_of_a_kind"
             
@@ -308,7 +308,7 @@ class Simulator:
             winner = self.check_two_pair_winner(hand_1_two_pair, hand_2_two_pair, self.hand_1, self.hand_2, board)
             if winner:
                 # write logs
-                if self.debug and winner:
+                if self.debug:
                     self.log(winner, self.hand_1, self.hand_2, board, "Two Pair")
                 return str(winner), "two_pair" 
             
@@ -319,7 +319,7 @@ class Simulator:
             winner = self.check_pair_winner(hand_1_pair, hand_2_pair, self.hand_1, self.hand_2, board)
             if winner:
                 # write logs
-                if self.debug and winner:
+                if self.debug:
                     self.log(winner, self.hand_1, self.hand_2, board, "Pair")
                 return str(winner), "pair"
             
@@ -331,7 +331,7 @@ class Simulator:
             
             if winner:
                 # write logs
-                if self.debug and winner:
+                if self.debug:
                     self.log(winner, self.hand_1, self.hand_2, board, "High Card")
                 return str(winner), "high"
             
