@@ -108,7 +108,6 @@ class HandChecker():
       
       
       
-    #NOTE: FIX THIS UGLY SHIT, ONLY USE THIS CODE ONCE. DRY BITCH
     @staticmethod
     def three_of_a_kind_helper(player_cards, board):
         board_and_player_cards = player_cards + board
