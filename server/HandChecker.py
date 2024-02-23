@@ -124,7 +124,6 @@ class HandChecker():
           
       
       
-    # how will this wor    
     def three_of_a_kind(self):        
         board_three_of_a_kind = self.three_of_a_kind_helper(player_cards=[], board=self.board)
         board_and_player_cards_three_of_a_kind = self.three_of_a_kind_helper(player_cards=self.player_cards, board=self.board)
